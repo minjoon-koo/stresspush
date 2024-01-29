@@ -1,0 +1,10 @@
+django
+mysqlclient
+mariadb==1.0.9
+python-dotenv
+requests
+djangorestframework
+social-auth-app-django
+django-redis
+celery
+

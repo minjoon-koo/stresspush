@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: versus
+    build: ./versus
+    command: gunicorn api.wsgi:application --bind 0.0.0.0:80
+    volumes:
+      - ./versus:/app
+    ports:
+      - "80:80"
+    depends_on:
+      - redis
+      
+  worker:
+    container_name: sec-worker
+    build: ./versus
+    command: ["celery", "-A", "api", "worker", "--loglevel=info"]
+    depends_on:
+      - redis
+
+  redis:  # Redis service
+    container_name: sec-redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:

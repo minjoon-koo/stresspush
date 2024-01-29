@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<div class="container mt-5">
+    <h1 class="text-center mb-5">Datadog Log Upload</h1>
+    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
+        
+        <!-- 로그 타입 선택 -->
+        <div class="form-group">
+            <label for="logType">*Log Type</label>
+            <select class="form-control" id="logType" name="logType">
+                <option value="text">Text</option>
+                <option value="json">JSON</option>
+            </select>
+        </div>
+
+        <!-- 정순/역순 선택 -->
+        <div class="form-group">
+            <label>*Order</label>
+            <div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="order" id="asc" value="asc" checked>
+                    <label class="form-check-label" for="asc">Ascending</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="order" id="desc" value="desc" disabled>
+                    <label class="form-check-label" for="desc">Descending</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 태그 입력 -->
+        <div class="form-group">
+            <label for="tags">*Tags (comma-separated)</label>
+            <input type="text" class="form-control" id="tags" name="tags" placeholder="Enter tags">
+        </div>
+
+        <!-- 파일 업로드 -->
+        <div class="custom-file mb-3">
+            <input type="file" name="{{ form.file.name }}" class="custom-file-input" id="validatedCustomFile" required>
+            <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+            <div class="invalid-feedback">Example invalid custom file feedback</div>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Upload</button>
+    </form>
+</div>
+
+<script>
+document.querySelector('.custom-file-input').addEventListener('change', function (e) {
+    var fileName = e.target.files[0].name;
+    var nextSibling = e.target.nextElementSibling;
+    nextSibling.innerText = fileName;
+});
+</script>

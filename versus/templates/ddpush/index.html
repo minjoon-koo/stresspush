@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .code-background {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .code-sample {
+            background-color: #f5f5f5; /* 배경색 */
+            border: 1px solid #ddd; /* 테두리 */
+            border-radius: 3px; /* 모서리 둥글게 */
+            padding: 10px; /* 안쪽 여백 */
+            font-family: "Courier New", Courier, monospace; /* 고정폭 글꼴 */
+            overflow-x: auto; /* 코드가 길 때 스크롤바 표시 */
+        }
+    </style>
+    <title>API 사용법</title>
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+    
+        <div class="card-body">
+            <h2 class="card-title">api-sec.soldout.co.kr 데이터독 log push API 사용법</h2>
+            <p>datadog log 검색 필터: 
+                <a href="https://app.datadoghq.com/logs?query=host%3Aapi.sec%20&cols=host%2Cservice&index=%2A&messageDisplay=inline&stream_sort=desc&viz=stream&from_ts=1689907947509&to_ts=1689908847509&live=true">
+                    host:.api.sec
+                </a>
+            </p>
+        </div>
+        <div class="card-body">
+            <h3 class="card-title">@UPDATE history</h3>
+        </div>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h3 class="card-title">json 한글 처리 관련-2023.08.03</h3>
+                <p class="card-text">/ddpush/log/json/ 에서 한글이 포함된 json 로그를 전송하는 경우 오류 발생</p>
+                <p class="card-text">다음과 같이 UTF-8 인코딩 후 전달 (임시)</p>
+                <br>
+                <p class="card-text">encode상태확인 후 자체적으로 처리하는 로직 구성중</p>
+                <div class="code-background mb-3">
+                    (오류)<br>
+                    requests.post('https://api-sec.soldout.co.kr/ddpush/log/json/', headers=headers, data=json.dumps(tagging_log,default=json_serial, ensure_ascii=False))<br><br>
+                    (정상처리)<br>
+                    requests.post('https://api-sec.soldout.co.kr/ddpush/log/json/', headers=headers, data=json.dumps(tagging_log,default=json_serial, ensure_ascii=False).encode('utf-8'))
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <h3 class="card-title">@Log 수동 업로드</h3>
+        </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3 class="card-title"><a href="/ddpush/log/">log/</a></h3>
+            <p class="card-text">이미 생성된 로그 파일을 데이터독에 업로드하여 분석에 활용할 수 있습니다. 로그는 평문 텍스트 형태와 JSON 형태로 구분하여 업로드가 가능하며, 태그 설정을 통해 데이터독에서의 로그 검색에 활용할 수 있습니다.</p>
+            <div class="code-background mb-3">
+                (text형식) <a href="https://app.datadoghq.com/logs?query=host%3Aapi.sec%20source%3Atext_log_file&cols=host%2Cservice&event=AgAAAYlypcD1HMGI5QAAAAAAAAAYAAAAAEFZbHlwY0QxQUFEMTVFZ3c5MVk0eUFBQQAAACQAAAAAMDE4OTczMTYtY2QzMi00MTc3LTk4OTEtYTBlNmU5OTVkY2U3&index=%2A&messageDisplay=inline&stream_sort=desc&viz=stream&from_ts=1689736193974&to_ts=1689908993974&live=true">source:text_log_file</a><br>
+                (josn형식) <a href="https://app.datadoghq.com/logs?query=host%3Aapi.sec%20source%3Ajson_log_file%20&cols=host%2Cservice&index=%2A&messageDisplay=inline&stream_sort=desc&viz=stream&from_ts=1689736193974&to_ts=1689908993974&live=true">source:json_log_file</a><br>
+                (tag 지정시) tag:[본인지정태그]
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <h3 class="card-title">@REST API - json 로그</h3>
+    </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3 class="card-title"><a href="/ddpush/log/json/">log/json/</a></h3>
+            <p class="card-text">토큰 획득 방식: <a href="/oAuth/">'/oAuth/'</a>에 접속 후 Google oAuth2로 로그인합니다. 로그인 후 해당 페이지를 다시 방문하여 API 인증 토큰을 획득하세요.</p>
+            
+            <h4>[tag를 지정하여 검색필터를 사용하는 경우]</h4>
+            <div class="code-background mb-3">
+                POST /ddpush/log/json/ HTTP/1.1<br>
+                Host: api-sec.soldout.co.kr<br>
+                Authorization: Token 2ce562d720a0a85d6637936b5375ed3a70e91752<br>
+                Content-Type: application/json<br>
+                <br>
+                {"tag":'Your Tag Name', "log": {'Your Json Log'}}<br>
+            </div>
+            <div class="p-3 mb-2 bg-info text-white">
+                Search filter<br>
+                > service:ddpush/log/json/ , tag:'Your Tag Name'
+            </div>
+
+            <br><br>
+            <h4>[로그만 전송하는 경우(tag:"api.sec,ddpush/log/json/")]</h4>
+            <div class="code-background mb-3">
+                POST /ddpush/log/json/ HTTP/1.1<br>
+                Host: api-sec.soldout.co.kr<br>
+                Authorization: Token 2ce562d720a0a85d6637936b5375ed3a70e91752<br>
+                Content-Type: application/json<br>
+                <br>
+                {'Your Json Log'}<br>
+            </div>
+            <div class="p-3 mb-2 bg-info text-white ">
+                Search filter<br>
+                > service:ddpush/log/json/ , tag:api.sec, tag:ddpush/log/json/
+            </div>
+            <br><br>
+            <h5 class="mt-4">코드 샘플(PHP)</h5>
+            <pre class="code-sample php"><code>&lt;?php
+
+$json_log = '{"type":1234,"case":{"dict":"dict1234"}}';
+$tagging_data = [
+    "tag" => "my-tag, my-tag2",
+    "log" => $json_log
+];
+$tagging_log = json_encode($tagging_data);
+
+$token = ''; //구글 로그인 후 /oAuth/ 페이지 접속으로 토큰 획득
+
+$headers = [
+    "Authorization: Token $token",
+    "Content-Type: application/json"
+];
+
+// 첫 번째 요청
+$ch1 = curl_init('https://api-sec.soldout.co.kr/ddpush/log/json/');
+curl_setopt($ch1, CURLOPT_CUSTOMREQUEST, "POST");
+curl_setopt($ch1, CURLOPT_POSTFIELDS, $json_log);
+curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch1, CURLOPT_HTTPHEADER, $headers);
+$result1 = curl_exec($ch1);
+curl_close($ch1);
+
+// 두 번째 요청
+$ch2 = curl_init('https://api-sec.soldout.co.kr/ddpush/log/json/');
+curl_setopt($ch2, CURLOPT_CUSTOMREQUEST, "POST");
+curl_setopt($ch2, CURLOPT_POSTFIELDS, $tagging_log);
+curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch2, CURLOPT_HTTPHEADER, $headers);
+$result2 = curl_exec($ch2);
+curl_close($ch2);
+
+?>
+            </code></pre>
+            <br>
+            <h5 class="mt-4">코드 샘플(python)</h5>
+            <pre class="code-sample py-3"><code>#해당 예시에서는 로그를 변수로 직접 지정하여 전송
+#상황에 맞게 api 호출 
+json_log ='''{"type":1234,"case":{"dict":"dict1234"}}''' 
+tagging_log = {
+    "tag" : "my-tag, my-tag2"
+    "log" : json_log
+}
+
+#header 지정 => Token 지정 
+token = '' #구글 로그인 후 /oAuth/ 페이지 접속으로 토큰 획득
+
+headers = {
+'Authorization': f'Token {token}',
+'Content-Type': 'application/json', 
+}
+
+#api 호출
+requests.post('https://api-sec.soldout.co.kr/ddpush/log/json/', headers=headers, data=json_log)
+requests.post('https://api-sec.soldout.co.kr/ddpush/log/json/', headers=headers, data=json.dumps(tagging_log))
+            </code></pre>
+            <br>
+            <h5 class="mt-4">코드 샘플(curl)</h5>
+            <pre class="code-sample bash"><code>#log only
+curl -X POST \
+-H "Authorization: Token YOUR_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{"type":1234,"case":{"dict":"dict1234"}}' \
+https://api-sec.soldout.co.kr/ddpush/log/json/ 
+
+#tagging
+curl -X POST \
+-H "Authorization: Token YOUR_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{"tag": "my-tag, my-tag2", "log": "{\"type\":1234,\"case\":{\"dict\":\"dict1234\"}}"}' \
+https://api-sec.soldout.co.kr/ddpush/log/json/
+            </code></pre>
+        </div>
+    </div>
+    <br><br>
+
+    <div class="card-body">
+        <h3 class="card-title">@REST API - Text 로그</h3>
+    </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3 class="card-title"><a href="/ddpush/log/text/">log/text/</a></h3>
+            <p class="card-text">토큰 획득 방식: <a href="/oAuth/">'/oAuth/'</a>에 접속 후 Google oAuth2로 로그인합니다. 로그인 후 해당 페이지를 다시 방문하여 API 인증 토큰을 획득하세요.</p>
+            <h4>[tag를 지정하여 검색필터를 사용하는 경우]</h4>
+            <div class="code-background mb-3">
+                POST /ddpush/log/text/ HTTP/1.1<br>
+                Host: api-sec.soldout.co.kr<br>
+                Authorization: Token 2ce562d720a0a85d6637936b5375ed3a70e91752<br>
+                Content-Type: application/json<br>
+                <br>
+                {"tag":'Your Tag Name', "log": 'Your Plain Text Log'}<br>
+            </div>
+            <div class="p-3 mb-2 bg-info text-white">
+                Search filter<br>
+                > service:ddpush/log/text/ , tag:'Your Tag Name'
+            </div><br><br>
+            <h4>[로그만 전송하는 경우(tag:"api.sec,ddpush/log/json/")]</h4>
+            <div class="code-background mb-3">
+                POST /ddpush/log/text/ HTTP/1.1<br>
+                Host: api-sec.soldout.co.kr<br>
+                Authorization: Token 2ce562d720a0a85d6637936b5375ed3a70e91752<br>
+                Content-Type: application/json<br>
+                <br>
+                'Your Plain Text Log'
+            </div>
+            <div class="p-3 mb-2 bg-info text-white ">
+                Search filter<br>
+                > service:ddpush/log/text/ , tag:api.sec, tag:ddpush/log/text/
+            </div><br><br>
+            <h5 class="mt-4">코드 샘플(PHP)</h5>
+            <pre class="code-sample py-3"><code>&lt;?php
+
+$text_log = 'plan text log - test api push "hellow"';
+$tagging_data = [
+    "tag" => "my-tag, my-tag2",
+    "log" => $text_log
+];
+$tagging_log = json_encode($tagging_data);
+
+$token = ''; // 구글 로그인 후 /oAuth/ 페이지 접속으로 토큰 획득
+
+$headers = [
+    "Authorization: Token $token",
+    "Content-Type: application/json"
+];
+
+// 첫 번째 요청
+$ch1 = curl_init('https://api-sec.soldout.co.kr/ddpush/log/text/');
+curl_setopt($ch1, CURLOPT_CUSTOMREQUEST, "POST");
+curl_setopt($ch1, CURLOPT_POSTFIELDS, $text_log);
+curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch1, CURLOPT_HTTPHEADER, $headers);
+$result1 = curl_exec($ch1);
+curl_close($ch1);
+
+// 두 번째 요청
+$ch2 = curl_init('https://api-sec.soldout.co.kr/ddpush/log/text/');
+curl_setopt($ch2, CURLOPT_CUSTOMREQUEST, "POST");
+curl_setopt($ch2, CURLOPT_POSTFIELDS, $tagging_log);
+curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch2, CURLOPT_HTTPHEADER, $headers);
+$result2 = curl_exec($ch2);
+curl_close($ch2);
+
+?>
+</code></pre>
+<br>
+
+            <h5 class="mt-4">코드 샘플(python)</h5>
+            <pre class="code-sample py-3"><code>#해당 예시에서는 로그를 변수로 직접 지정하여 전송
+#상황에 맞게 api 호출 
+text_log ='''plan text log - test api push "hellow"''' 
+tagging_log = {
+    "tag" : "my-tag, my-tag2"
+    "log" : json_log
+}
+
+#header 지정 => Token 지정 
+token = '' #구글 로그인 후 /oAuth/ 페이지 접속으로 토큰 획득
+
+headers = {
+'Authorization': f'Token {token}',
+'Content-Type': 'application/json', 
+}
+
+#api 호출
+requests.post('https://api-sec.soldout.co.kr/ddpush/log/text/', headers=headers, data=text_log)
+requests.post('https://api-sec.soldout.co.kr/ddpush/log/text/', headers=headers, data=text.dumps(tagging_log))
+            </code></pre>
+<br>
+<h5 class="mt-4">코드 샘플(curl)</h5>
+            <pre class="code-sample bash"><code>#log only
+curl -X POST \
+-H "Authorization: Token YOUR_TOKEN" \
+-H "Content-Type: application/json" \
+-d 'plan text log - test api push "hellow"' \
+https://api-sec.soldout.co.kr/ddpush/log/text/
+
+
+#tagging
+curl -X POST \
+-H "Authorization: Token YOUR_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{"tag": "my-tag, my-tag2", "log": "plan text log - test api push \"hellow\""}' \
+https://api-sec.soldout.co.kr/ddpush/log/text/
+            </code></pre>
+        </div>
+    </div>
+
+    <footer class="mt-5">
+        <div class="card">
+            <div class="card-body text-center">
+                © 2023 soldout.co.kr.
+            </div>
+        </div>
+    </footer>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>
+
+
+
+
+
+
+

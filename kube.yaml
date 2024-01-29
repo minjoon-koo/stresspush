@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-sec
+
+spec:
+  selector:
+    matchLabels:
+      app: api-sec
+
+  replicas: 8
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+
+  template:
+    metadata:
+      labels:
+        app: api-sec
+
+
+    spec:
+      containers:
+        - name: api-sec
+          image: seccrsoldout.azurecr.io/sldt-co-ltd/soldout_api_sec:latest
+          imagePullPolicy: Always
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                - /bin/sh
+                - -c 
+                - "/bin/echo 'options single-request-reopen' >> /etc/resolv.conf"
+        - name: api-sec-celery-worker  # celery 워커용 컨테이너
+          image: seccrsoldout.azurecr.io/sldt-co-ltd/soldout_api_sec:latest
+          command: ["celery", "-A", "api", "worker", "--loglevel=info", "--concurrency=4"]
+          env:
+            - name: DD_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+
+          resources:
+            limits:
+              memory: "1024Mi"
+              cpu: "1000m"
+
+          ports:
+            - containerPort: 80
+
+
+      dnsConfig:
+        options:
+        - name: ndots
+          value: "2"            
+
+      terminationGracePeriodSeconds: 50

@@ -1,0 +1,28 @@
+2022-07-14 05:37:21-07 localhost Installer Progress[52]: Progress UI App Starting
+2022-07-14 05:37:24-07 MacBook-Pro softwareupdated[264]: softwareupdated: Starting with build 12.3 (21E230)
+2022-07-14 05:37:24-07 MacBook-Pro softwareupdated[264]: Initializing SoftwareUpdateMacController (SUMacControllerServer)
+2022-07-14 05:37:25-07 MacBook-Pro softwareupdated[264]: Initialized SoftwareUpdateMacController (SUMacControllerServer)
+2022-07-14 05:37:25-07 MacBook-Pro softwareupdated[264]: SUOSUAlarmObserver: Setting alarm event stream handler
+2022-07-14 05:37:25-07 MacBook-Pro softwareupdated[264]: SUOSUCustomTimeObserver: Setting alarm event stream handler
+2022-07-14 05:37:25-07 MacBook-Pro softwareupdated[264]: SUOSUServiceDaemon: Error reading /var/folders/zz/zyxvpxvq6csfxvn_n00000s0000068/C/com.apple.OSUpdate.SUOSUServiceDaemon.state: Error Domain=NSCocoaErrorDomain Code=260 "The file “com.apple.OSUpdate.SUOSUServiceDaemon.state” couldn’t be opened because there is no such file." UserInfo={NSFilePath=/var/folders/zz/zyxvpxvq6csfxvn_n00000s0000068/C/com.apple.OSUpdate.SUOSUServiceDaemon.state, NSUnderlyingError=0x155643a20 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}
+2022-07-14 05:37:25-07 MacBook-Pro softwareupdated[264]: SUOSUServiceDaemon: Use standard 6 hour auto update interval
+2022-07-14 05:37:25-07 MacBook-Pro softwareupdated[264]: authorizeWithEmptyAuthorizationForRights: Requesting provided rights: 1
+2022-07-14 05:37:25-07 MacBook-Pro softwareupdated[264]: /Library/Bundles does not exist - watching for directory creation
+2022-07-14 05:37:25-07 MacBook-Pro softwareupdated[264]: Previous System Version : (null), Current System Version : 12.3 (21E230)
+2022-07-14 05:37:25-07 MacBook-Pro softwareupdated[264]: Adding client SUUpdateServiceClient pid=169, uid=0, installAuth=NO rights=(), transactions=0 (/usr/libexec/mobileassetd)
+2022-07-14 05:37:26-07 MacBook-Pro com.apple.MobileSoftwareUpdate.CleanupPreparePathService[277]: Recorded item in install history database: "macOS 12.3" (12.3)
+2022-07-14 05:37:26-07 MacBook-Pro softwareupdated[264]: SUStatisticsManager: Successfully reported statistics for category 2
+2022-07-14 05:37:26-07 MacBook-Pro softwareupdated[264]: SoftwareUpdate: Fire periodic check after upgrade to 12.3 (21E230)
+2022-07-14 05:37:26-07 MacBook-Pro softwareupdated[264]: BackgroundActivity: Scheduling one-time background activity in approx 15 minutes
+2022-07-14 05:37:26-07 MacBook-Pro softwareupdated[264]: BackgroundActivity: Activity check-in with Interval 0 
+2022-07-14 05:37:26-07 MacBook-Pro Language Chooser[289]: System doesn't have bridgeOS
+2022-07-14 05:37:26-07 MacBook-Pro Installer Progress[52]: IASGetCurrentInstallPhaseList: Unable to get phases
+2022-07-14 05:37:26-07 MacBook-Pro Installer Progress[52]: IASGetCurrentInstallPhase: Unable to get the current phase name
+2022-07-14 05:37:26-07 MacBook-Pro Installer Progress[52]: currentPhase = "(null)", phases = (null)
+2022-07-14 05:37:26-07 MacBook-Pro Installer Progress[52]: Progress app is loading…
+2022-07-14 05:37:26-07 MacBook-Pro Installer Progress[52]: Progress app is running with no progress set
+2022-07-14 05:37:26-07 MacBook-Pro Installer Progress[52]: Progress app is running…
+2022-07-14 05:37:26-07 MacBook-Pro softwareupdate_firstrun_tasks[291]: Rebuilding Tag-Cache inside of ProductMetadata.plist.
+2022-07-14 05:37:30-07 MacBook-Pro Language Chooser[289]: LCA: No networks found in Wifi scan.
+2022-07-14 05:37:30-07 MacBook-Pro Language Chooser[289]: Using progress phase: Language Chooser
+2022-07-14 05:37:30-07 MacBook-Pro Installer Progress[52]: Connected processes {
