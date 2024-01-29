@@ -16,6 +16,6 @@ urlpatterns = [
     path('log/json/', views.log_json),
     path('log/yaml/', views.log_yaml),
     path('log/file/', views.log_file),
-     path('log/push/', views.log_file),
+    path('log/push/', views.log_file),
     re_path(r'^register-by-token/(?P<backend>[^/]+)/$', register_by_access_token),
 ] 
