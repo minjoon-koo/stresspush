@@ -42,6 +42,7 @@ DEBUG = False
 ALLOWED_HOSTS = [
    'localhost',
    'api-sec.soldout.co.kr'
+   'push.soldout.co.kr'
 ]
 
 
